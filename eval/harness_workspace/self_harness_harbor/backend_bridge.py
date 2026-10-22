@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+import os
 import shlex
 import tempfile
 from pathlib import Path
@@ -31,6 +32,23 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_COMMAND_TIMEOUT_SEC = 300
 """Default per-command timeout (5 minutes) to prevent stuck command hangs."""
+
+TOOL_TIMEOUT_ENV = "SELF_HARNESS_TOOL_TIMEOUT_S"
+"""Environment variable used to forward the configured tool timeout to the executor."""
+
+
+def _default_command_timeout_sec() -> int:
+    """Read the configured tool timeout so the limit reaches the execution layer."""
+
+    raw = os.environ.get(TOOL_TIMEOUT_ENV, "").strip()
+    if raw:
+        try:
+            value = int(float(raw))
+        except ValueError:
+            value = 0
+        if value > 0:
+            return value
+    return DEFAULT_COMMAND_TIMEOUT_SEC
 
 _PIPE_FIELD_COUNT = 2
 """Expected number of pipe-separated fields in `ls`/`glob` output."""
@@ -68,7 +86,7 @@ class HarborSandbox(SandboxBackendProtocol):
 
                 If None, uses the environment's default timeout.
         """
-        timeout_sec = timeout if timeout is not None else DEFAULT_COMMAND_TIMEOUT_SEC
+        timeout_sec = timeout if timeout is not None else _default_command_timeout_sec()
         try:
             if timeout_sec > 0:
                 result = await asyncio.wait_for(

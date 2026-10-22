@@ -1,0 +1,93 @@
+# SWE-bench Verified 100-task example configuration (full experiment).
+#
+# Fixed task split: repository root `swe_bench_verified_stratified_100.json`
+# (67 train / 33 heldout, five-domain stratified sample; not repository-balanced).
+#
+# This configuration is an evaluation of the Self-Harness method on the
+# configured model (default DeepSeek Flash via an OpenAI-compatible endpoint).
+# It is NOT a model-for-model reproduction of the paper's MiniMax M2.5 / GLM-5 /
+# Qwen3.5-35B-A3B runs.
+#
+# Prerequisites (external): pinned SWE-bench Verified export, repository clones
+# with base commits, Docker, official `swebench` evaluator, and an API key in
+# SELF_HARNESS_MODEL_API_KEY. See eval/data/README.md.
+#
+# Use the adapter virtualenv:
+#   .venv/bin/python workflow/scripts/run_self_harness.py run ...
+
+[eval]
+benchmark = "swe_bench_verified"
+name = "swebench-verified-100"
+repeats = 2
+split = ["train", "heldout"]
+task_timeout_s = 3600
+tool_timeout_s = 120
+case_concurrency = 2
+max_retries = 1
+smoke_test = false
+pilot = false
+
+[dataset]
+name = "princeton-nlp/SWE-bench_Verified"
+# Pinned HuggingFace dataset repository commit (reproduction configuration, not
+# a claimed paper revision).
+revision = "c104f840cc67f8b6eec6f759ebc8b2693d585d4a"
+manifest_path = "../../swe_bench_verified_stratified_100.json"
+source = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/datasets/swe_bench_verified_100.jsonl"
+cache_dir = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/cache/swebench"
+repos_dir = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/repos"
+allow_hf_download = false
+
+[model]
+provider = "openai_compatible"
+model_id = "${SELF_HARNESS_MODEL:-deepseek-flash}"
+base_url = "${OPENAI_BASE_URL:-https://api.qadg.xyz/v1}"
+endpoint_type = "hosted_api"
+temperature = 0.0
+top_p = 1.0
+max_tokens = 8192
+reasoning_budget = 0
+max_retries = 2
+
+[agent]
+kind = "command"
+# The execution agent and the proposer use the same model/endpoint/key/decoding.
+# Absolute placeholders are injected by the runner; no shell $VARIABLE expansion.
+command = "{repo_root}/.venv/bin/python {repo_root}/eval/scripts/run_deepagent_swebench.py --instruction {instruction_file} --workspace {workspace} --case-dir {case_dir} --task-id {task_id} --repo {repo} --base-commit {base_commit} --split {split} --repeat {repeat}"
+env_passthrough = ["SELF_HARNESS_MODEL", "SELF_HARNESS_MODEL_API_KEY", "OPENAI_BASE_URL"]
+max_retries = 1
+
+[evaluator]
+kind = "official"
+split = "test"
+dataset = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/datasets/swe_bench_verified_100.json"
+max_workers = 1
+name = "swebench-official-harness"
+version = "swebench-4.0.5"
+
+[constraints]
+outbound_bandwidth_mbps = 2.0
+bandwidth_enforcement = "auto"
+cache_dir = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/cache/swebench"
+# Agent sandbox image (task-scoped, only the workspace is bind-mounted).
+docker_image = "python:3.12"
+docker_image_digest = "sha256:68f411ef38fc2d8176cef518099aa88dfb8fbfd7a4c50587c60e1c8d1fdc843e"
+
+[harness]
+baseline_dir = "../harness_workspace"
+kind = "baseline"
+
+[harness.surfaces]
+baseline = "../harness_workspace/repo_baseline.py"
+
+[run]
+output_root = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/runs"
+proposal_width = 4
+max_rounds = 5
+max_candidate_evaluations = 8
+max_consecutive_no_improvement = 2
+max_proposer_failures = 3
+reuse_existing = false
+# Same model/endpoint/key/decoding as the execution agent; the workflow runs it
+# from the repository root and passes the prompt/response paths explicitly.
+proposer_command = "{repo_root}/.venv/bin/python {repo_root}/proposer/scripts/run_openai_compatible_proposer.py --prompt {prompt} --response {response} --width {width} --heldout-ids-file {heldout_ids_file} --train-ids-file {train_ids_file}"

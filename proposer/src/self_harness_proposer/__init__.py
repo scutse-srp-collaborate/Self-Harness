@@ -13,6 +13,14 @@ from .multi_proposer import (
     generate_multi_proposals,
     parse_multi_proposer_response,
 )
+from .isolation import (
+    HeldoutLeakError,
+    assert_no_heldout_leak,
+    audit_text,
+    find_heldout_leaks,
+    load_task_ids_file,
+    validate_proposal_metadata,
+)
 from .materialize import (
     CandidateManifest,
     SurfaceSpec,
@@ -24,6 +32,12 @@ from .materialize import (
 
 __all__ = [
     "CandidateManifest",
+    "HeldoutLeakError",
+    "assert_no_heldout_leak",
+    "audit_text",
+    "find_heldout_leaks",
+    "load_task_ids_file",
+    "validate_proposal_metadata",
     "EditableSurface",
     "HOOKS_BY_MECHANISM_FAMILY",
     "MultiProposerRequest",

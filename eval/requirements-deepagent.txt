@@ -1,0 +1,29 @@
+# Pinned dependencies validated for the DeepAgents execution adapter and the
+# OpenAI-compatible proposer adapter (Python 3.12, tested 2026-10).
+#
+# Install into the repository adapter virtualenv:
+#   uv venv --python 3.12 .venv
+#   uv pip install --python .venv/bin/python -r eval/requirements-deepagent.txt
+#
+# These pins are the versions used by the committed adapter self-checks and
+# fixture/integration tests. They are not a claim about other versions.
+
+deepagents==0.7.29
+langchain==1.4.6
+langchain-core==1.6.12
+langchain-openai==1.7.2
+langgraph==1.2.16
+langchain-anthropic==1.7.6
+openai==3.35.1
+pydantic==2.14.1
+httpx==0.28.1
+
+# Official SWE-bench evaluator (also pulls datasets/pyarrow/docker).
+swebench==4.0.5
+datasets==5.1.0
+pyarrow==26.0.0
+docker==7.2.0
+
+# Test/lint tooling used for the verification commands in README.
+pytest==9.1.1
+ruff==0.17.1

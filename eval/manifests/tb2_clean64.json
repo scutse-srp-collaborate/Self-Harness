@@ -1,0 +1,397 @@
+{
+  "benchmark": "terminal_bench_2",
+  "name": "Terminal-Bench 2.0 Clean64",
+  "version": "2.0-clean64",
+  "declared_counts": {
+    "train": 43,
+    "heldout": 21,
+    "total": 64
+  },
+  "stratum_note": "The public repository lists only the fixed Clean64 task ids and their train/heldout split; per-task upstream strata were not shipped, so the split label is used as the conservative stratum. Override `stratum` per task if upstream strata become available.",
+  "tasks": [
+    {
+      "task_id": "bn_fit_modify",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "build_cython_ext",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "build_pmars",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "build_pov_ray",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "caffe_cifar_10",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "cancel_async_tasks",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "cobol_modernization",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "constraints_scheduling",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "custom_memory_heap_crash",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "db_wal_recovery",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "dna_insert",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "extract_elf",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "feal_differential_cryptanalysis",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "fix_git",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "gcode_to_text",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "git_leak_recovery",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "llm_inference_batching_scheduler",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "log_summary_date_ranges",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "mailman",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "make_doom_for_mips",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "mcmc_sampling_stan",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "merge_diff_arc_agi_task",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "model_extraction_relu_logits",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "multi_source_data_merger",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "nginx_request_logging",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "overfull_hbox",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "password_recovery",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "path_tracing",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "polyglot_c_py",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "polyglot_rust_c",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "protein_assembly",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "prove_plus_comm",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "qemu_alpine_ssh",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "qemu_startup",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "raman_fitting",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "regex_chess",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "regex_log",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "sparql_university",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "sqlite_with_gcov",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "torch_pipeline_parallelism",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "torch_tensor_parallelism",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "vulnerable_secret",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "write_compressor",
+      "split": "train",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "break_filter_js_from_html",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "count_dataset_tokens",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "distribution_search",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "dna_assembly",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "extract_moves_from_video",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "feal_linear_cryptanalysis",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "filter_js_from_html",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "git_multibranch",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "headless_terminal",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "kv_store_grpc",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "large_scale_text_editing",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "largest_eigenval",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "make_mips_interpreter",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "modernize_scientific_stack",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "openssl_selfsigned_cert",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "path_tracing_reverse",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "pypi_server",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "pytorch_model_cli",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "rstan_to_pystan",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "sqlite_db_truncate",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    },
+    {
+      "task_id": "tune_mjcf",
+      "split": "heldout",
+      "stratum": "clean64",
+      "selector": null
+    }
+  ]
+}

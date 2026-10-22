@@ -1,0 +1,88 @@
+# SWE-bench Verified 5-task TRAIN-ONLY pilot configuration.
+#
+# NOT a benchmark result: at most 5 fixed train tasks, 2 repeats, no heldout,
+# no candidate iteration. Executed with DeepSeek Flash via an OpenAI-compatible
+# endpoint. See eval/data/README.md for external prerequisites.
+#
+# Run with the adapter virtualenv:
+#   .venv/bin/python eval/scripts/swebench_preflight.py
+#   .venv/bin/python eval/scripts/run_swebench_pilot.py --config eval/configs/swebench_pilot_5.toml
+
+[eval]
+benchmark = "swe_bench_verified"
+name = "swebench-verified-pilot-5"
+repeats = 2
+split = ["train"]
+task_ids = [
+  "astropy__astropy-13398",
+  "django__django-14017",
+  "matplotlib__matplotlib-24627",
+  "pydata__xarray-6461",
+  "sphinx-doc__sphinx-8548",
+]
+task_timeout_s = 3600
+tool_timeout_s = 120
+case_concurrency = 1
+max_retries = 1
+smoke_test = false
+pilot = true
+pilot_max_tasks = 5
+
+[dataset]
+name = "princeton-nlp/SWE-bench_Verified"
+# Pinned HuggingFace dataset repository commit (reproduction configuration).
+revision = "c104f840cc67f8b6eec6f759ebc8b2693d585d4a"
+manifest_path = "../../swe_bench_verified_stratified_100.json"
+source = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/datasets/swe_bench_verified_100.jsonl"
+cache_dir = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/cache/swebench"
+repos_dir = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/repos"
+allow_hf_download = false
+
+[model]
+provider = "openai_compatible"
+model_id = "${SELF_HARNESS_MODEL:-deepseek-flash}"
+base_url = "${OPENAI_BASE_URL:-https://api.qadg.xyz/v1}"
+endpoint_type = "hosted_api"
+temperature = 0.0
+top_p = 1.0
+max_tokens = 8192
+reasoning_budget = 0
+max_retries = 2
+
+[agent]
+kind = "command"
+# Absolute expansions are injected by the runner; no shell $VARIABLE expansion.
+command = "{repo_root}/.venv/bin/python {repo_root}/eval/scripts/run_deepagent_swebench.py --instruction {instruction_file} --workspace {workspace} --case-dir {case_dir} --task-id {task_id} --repo {repo} --base-commit {base_commit} --split {split} --repeat {repeat}"
+env_passthrough = ["SELF_HARNESS_MODEL", "SELF_HARNESS_MODEL_API_KEY", "OPENAI_BASE_URL"]
+max_retries = 1
+
+[evaluator]
+kind = "official"
+split = "test"
+dataset = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/datasets/swe_bench_verified_100.json"
+max_workers = 1
+name = "swebench-official-harness"
+version = "swebench-4.0.5"
+
+[constraints]
+outbound_bandwidth_mbps = 2.0
+bandwidth_enforcement = "auto"
+cache_dir = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/cache/swebench"
+docker_image = "python:3.12"
+docker_image_digest = "sha256:68f411ef38fc2d8176cef518099aa88dfb8fbfd7a4c50587c60e1c8d1fdc843e"
+
+[harness]
+baseline_dir = "../harness_workspace"
+kind = "baseline"
+
+[harness.surfaces]
+baseline = "../harness_workspace/repo_baseline.py"
+
+[run]
+output_root = "${SELF_HARNESS_DATA_ROOT:-../../../Self-Harness-data}/runs"
+proposal_width = 4
+max_rounds = 5
+max_candidate_evaluations = 8
+max_consecutive_no_improvement = 2
+max_proposer_failures = 3
+proposer_command = "{repo_root}/.venv/bin/python {repo_root}/proposer/scripts/run_openai_compatible_proposer.py --prompt {prompt} --response {response} --width {width} --heldout-ids-file {heldout_ids_file} --train-ids-file {train_ids_file}"

@@ -7,3 +7,12 @@ __pycache__/
 venv/
 runs/
 outputs/
+.cache/
+eval/.smoke/
+logs/
+evaluator_results/
+
+# local secrets (never commit)
+.env
+.env.*
+!.env.example

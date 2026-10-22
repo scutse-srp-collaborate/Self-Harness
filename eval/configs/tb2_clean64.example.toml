@@ -1,0 +1,73 @@
+# Terminal-Bench 2.0 Clean64 example configuration.
+#
+# Prerequisites (external to this repository):
+#   * A Harbor Terminal-Bench eval project at `evals_project` that exposes the
+#     Clean64 tasks to pytest (JUnit XML via --junitxml and a Harbor report via
+#     --evals-report-file).
+#   * The Terminal-Bench 2.0 task data and a working container runtime.
+#   * A model endpoint; credentials are injected through the environment.
+#
+# A single example case is NOT a Terminal-Bench evaluation. This config selects
+# the complete fixed 43 train / 21 heldout Clean64 split from
+# eval/manifests/tb2_clean64.json.
+
+[eval]
+benchmark = "terminal_bench_2"
+name = "tb2-clean64"
+repeats = 2
+split = ["train", "heldout"]
+task_timeout_s = 900
+tool_timeout_s = 120
+case_concurrency = 2
+max_retries = 0
+
+# Path to the eval project that owns the pytest benchmark tests.
+evals_project = "${SELF_HARNESS_TB2_EVAL_PROJECT}"
+# Path to the harness workspace importable by the benchmark.
+harness_workspace = "../harness_workspace"
+agent_import_path = "self_harness_harbor.harbor_wrapper:AgentWrapper"
+model_flag = "--model"
+summary_flag = "--evals-report-file"
+pytest_args = ["-q"]
+# Map Clean64 task ids to the eval project's pytest node selectors.
+selector_template = "{task_id}"
+
+[dataset]
+manifest_path = "../manifests/tb2_clean64.json"
+
+[model]
+provider = "minimax"
+model_id = "${SELF_HARNESS_MODEL}"
+endpoint_type = "hosted_api"
+temperature = 0.0
+top_p = 1.0
+max_tokens = 8192
+reasoning_budget = 0
+max_retries = 2
+
+[constraints]
+# Required by the experiment protocol. `enforced` is recorded per result; when
+# no trickle/tc limiter is available the result states enforced=false.
+outbound_bandwidth_mbps = 2.0
+bandwidth_enforcement = "auto"
+cache_dir = "../../.cache/self_harness/tb2"
+
+[harness]
+baseline_dir = "../harness_workspace"
+kind = "baseline"
+
+[harness.surfaces]
+baseline = "../harness_workspace/repo_baseline.py"
+
+[run]
+output_root = "../../runs"
+proposal_width = 4
+max_rounds = 5
+max_candidate_evaluations = 20
+max_consecutive_no_improvement = 2
+max_proposer_failures = 3
+reuse_existing = false
+resume = false
+# Example proposer command; the workflow renders {prompt}, {response}, {width},
+# {train_ids_file}, {heldout_ids_file}, {run_root}, {round}, {run_id}, {diagnosis}.
+# proposer_command = "python3 /path/to/model_proposer.py --prompt {prompt} --response {response} --width {width}"
